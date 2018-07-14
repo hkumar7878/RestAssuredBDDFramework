@@ -1,4 +1,4 @@
-package getRequest;
+package getRequestValidation;
 
 
 import static io.restassured.RestAssured.*;

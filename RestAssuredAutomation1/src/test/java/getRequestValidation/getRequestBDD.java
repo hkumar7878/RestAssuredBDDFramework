@@ -1,4 +1,4 @@
-package getRequest;
+package getRequestValidation;
 import static io.restassured.RestAssured.*;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -11,11 +11,20 @@ public class getRequestBDD {
 	/*
 	 * To verify the status code
 	 */
-	//@Test
+	@Test
 	public void testStatusCode()
 	{
+		
+		
+		try
+		{
 		given().get("http://jsonplaceholder.typicode.com/posts/2").
-		then().statusCode(200);
+		then().assertThat().statusCode(201);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	//@Test
@@ -30,19 +39,33 @@ public class getRequestBDD {
 	 */
 
 	
-	@Test
+	//@Test
 	public void testEqualsToFunction()
 	{
 		try
 		{
-		given().get("http://services.groupkt.com/country/get/iso2code/IN").
-		then().body("RestResponse.result.name", equalTo("India1"));
+			given().get("http://services.groupkt.com/country/get/iso2code/IN").
+			then().body("RestResponse.result.name", equalTo("India"));
 		}
 		catch(Exception e)
 		{
 			e.getMessage();
 			System.out.println("Error");
 		}
+	}
+	
+	//@Test
+	public void testHasItems()
+	{
+		given().get("http://services.groupkt.com/country/get/all").
+		then().body("RestResponse.result.name", hasItems("India","Australia"));
+	}
+	
+	//@Test
+	public void testHeader()
+	{
+		given().param("Key1","value1").header("key2","value2").when().get("http://services.groupkt.com/country/get/iso2code/CN").then().statusCode(200).and().
+		body("Response.result.alpha3_code",equalTo("CHN"));
 	}
 	
 	
